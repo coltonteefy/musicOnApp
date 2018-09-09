@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="358dp">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="345dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            app:srcCompat="@drawable/boris_cover" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="222dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/play_background"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="55dp"
+            android:text="Boris Brejcha"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/songName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/artistName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-50dp"
+            android:text="Purple Noise"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <SeekBar
+            android:id="@+id/songPositionBar"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:progressBackgroundTint="@color/white" />
+
+        <TextView
+            android:id="@+id/elapsedTimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/songPositionBar"
+            android:layout_below="@+id/songPositionBar"
+            android:text="0:00"
+            android:textColor="@color/white"
+            android:layout_alignLeft="@+id/songPositionBar" />
+
+        <TextView
+            android:id="@+id/totalTimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/songPositionBar"
+            android:layout_below="@+id/songPositionBar"
+            android:text="8:59"
+            android:textColor="@color/white"
+            android:layout_alignRight="@+id/songPositionBar" />
+
+        <Button
+            android:id="@+id/playBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="62dp"
+            android:background="@drawable/ic_play_button" />
+
+        <Button
+            android:id="@+id/rewindBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/playBtn"
+            android:layout_toLeftOf="@+id/songName"
+            android:layout_toStartOf="@+id/songName"
+            android:background="@drawable/ic_rewind_button" />
+
+        <Button
+            android:id="@+id/fastForwardBtn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/playBtn"
+            android:layout_toEndOf="@+id/songName"
+            android:layout_toRightOf="@+id/songName"
+            android:background="@drawable/ic_fast_forward_button" />
+
+        <!--<SeekBar-->
+            <!--android:id="@+id/volumeBar"-->
+            <!--android:layout_width="225dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/songName"-->
+            <!--android:layout_centerHorizontal="true" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@+id/volumeBar"-->
+            <!--android:layout_alignStart="@+id/songPositionBar"-->
+            <!--app:srcCompat="@drawable/ic_volume_down"-->
+            <!--android:layout_alignLeft="@+id/songPositionBar" />-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView5"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBottom="@+id/volumeBar"-->
+            <!--android:layout_toEndOf="@+id/volumeBar"-->
+            <!--app:srcCompat="@drawable/ic_volume_up"-->
+            <!--android:layout_toRightOf="@+id/volumeBar" />-->
+
+    </RelativeLayout>
+</RelativeLayout>
