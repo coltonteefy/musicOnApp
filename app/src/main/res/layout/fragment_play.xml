@@ -18,7 +18,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:padding="10dp"
-            app:srcCompat="@drawable/boris_cover" />
+            app:srcCompat="@drawable/boris_cover_id0001" />
     </RelativeLayout>
 
     <RelativeLayout

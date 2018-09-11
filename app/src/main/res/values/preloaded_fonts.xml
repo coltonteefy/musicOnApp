@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/abel</item>
+        <item>@font/anton</item>
+        <item>@font/bungee_inline</item>
+        <item>@font/bungee_outline</item>
+        <item>@font/cabin</item>
+        <item>@font/days_one</item>
+        <item>@font/gruppo</item>
+        <item>@font/julius_sans_one</item>
+        <item>@font/krona_one</item>
+        <item>@font/lilita_one</item>
+        <item>@font/ntr</item>
+        <item>@font/rosario</item>
+        <item>@font/titan_one</item>
+    </array>
+</resources>

@@ -3,30 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_purple"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_background"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/signOutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="18dp"
-        android:onClick="signOut"
-        android:text="Sign out"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:theme="@style/MyButton" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/dropMenuBtn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/dropMenuBtn"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Profile Fragment"
-        android:textSize="30sp" />
+        android:orientation="vertical">
+            <include
+                layout="@layout/snippet_top_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/snippet_user_track_numbers"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="38dp"
+                android:orientation="vertical">
+
+                <!--TODO replace with recycle view-->
+
+                <include
+                    layout="@layout/snippet_profile_each_track"/>
+                <include
+                    layout="@layout/snippet_profile_each_track"/>
+                <include
+                    layout="@layout/snippet_profile_each_track"/>
+                <include
+                    layout="@layout/snippet_profile_each_track"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </RelativeLayout>

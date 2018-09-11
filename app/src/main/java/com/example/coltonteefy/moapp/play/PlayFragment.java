@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.R;
 
@@ -37,7 +38,7 @@ public class PlayFragment extends Fragment {
         songPositionBar = view.findViewById(R.id.songPositionBar);
 
         //  media player
-        mp = MediaPlayer.create(getActivity(), R.raw.boris_brejcha_purple_noise);
+        mp = MediaPlayer.create(getActivity(), R.raw.boris_brejcha_purple_noise_id0001);
         mp.seekTo(0);
         mp.setVolume(0.5f, 0.5f);
 
@@ -85,6 +86,13 @@ public class PlayFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Toast.makeText(getActivity(), "DESTROYED", Toast.LENGTH_SHORT).show();
+        mp.stop();
     }
 
     public void totalTime(int time) {

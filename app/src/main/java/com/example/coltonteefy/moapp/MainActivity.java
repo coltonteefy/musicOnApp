@@ -7,14 +7,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.home.HomeFragment;
 import com.example.coltonteefy.moapp.play.PlayFragment;
 import com.example.coltonteefy.moapp.profile.ProfileFragment;
 import com.example.coltonteefy.moapp.search.SearchFragment;
 import com.example.coltonteefy.moapp.upload.UploadFragment;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 public class MainActivity extends AppCompatActivity {
     final Fragment fragment1 = new HomeFragment();
@@ -41,11 +46,6 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.fragment_container, fragment3, "3").hide(fragment3).commit();
         fm.beginTransaction().add(R.id.fragment_container, fragment2, "2").hide(fragment2).commit();
         fm.beginTransaction().add(R.id.fragment_container, fragment1, "1").commit();
-    }
-
-    public void signOut(View view) {
-        Intent signOut = new Intent(this, SignInActivity.class);
-        startActivity(signOut);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

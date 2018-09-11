@@ -30,4 +30,7 @@ dependencies {
 
     //dialog library  https://github.com/orhanobut/dialogplus
     implementation 'com.orhanobut:dialogplus:1.11@aar'
+
+    //circle image library
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
