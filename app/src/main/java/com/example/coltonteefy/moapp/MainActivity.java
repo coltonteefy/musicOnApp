@@ -1,27 +1,22 @@
 package com.example.coltonteefy.moapp;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.home.HomeFragment;
 import com.example.coltonteefy.moapp.play.PlayFragment;
 import com.example.coltonteefy.moapp.profile.ProfileFragment;
 import com.example.coltonteefy.moapp.search.SearchFragment;
 import com.example.coltonteefy.moapp.upload.UploadFragment;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "HomeActivity";
     final Fragment fragment1 = new HomeFragment();
     final Fragment fragment2 = new SearchFragment();
     final Fragment fragment3 = new PlayFragment();
@@ -29,16 +24,17 @@ public class MainActivity extends AppCompatActivity {
     final Fragment fragment5 = new ProfileFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
+    int activePosition = 1, futurePosition = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate: Starting");
 
         //  bottom navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-
 
         //  create fragment instances in order to maintain states when navigating between each
         fm.beginTransaction().add(R.id.fragment_container, fragment5, "5").hide(fragment5).commit();
@@ -54,24 +50,32 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_home:
-                            fm.beginTransaction().hide(active).show(fragment1).commit();
+                            BottomNavHelper.enterRightLeaveLeft(active, fragment1, fm);
                             active = fragment1;
+                            activePosition = 1;
                             break;
                         case R.id.action_search:
-                            fm.beginTransaction().hide(active).show(fragment2).commit();
+                            futurePosition = 2;
+                            BottomNavHelper.fragmentTransition(active, fragment2, fm, activePosition, futurePosition);
                             active = fragment2;
+                            activePosition = 2;
                             break;
                         case R.id.action_play:
-                            fm.beginTransaction().hide(active).show(fragment3).commit();
+                            futurePosition = 3;
+                            BottomNavHelper.fragmentTransition(active, fragment3, fm, activePosition, futurePosition);
                             active = fragment3;
+                            activePosition = 3;
                             break;
                         case R.id.action_upload:
-                            fm.beginTransaction().hide(active).show(fragment4).commit();
+                            futurePosition = 4;
+                            BottomNavHelper.fragmentTransition(active, fragment4, fm, activePosition, futurePosition);
                             active = fragment4;
+                            activePosition = 4;
                             break;
                         case R.id.action_profile:
-                            fm.beginTransaction().hide(active).show(fragment5).commit();
+                            BottomNavHelper.enterLeftLeaveRight(active, fragment5, fm);
                             active = fragment5;
+                            activePosition = 5;
                             break;
                     }
                     return true;

@@ -33,7 +33,6 @@ public class ProfileFragment extends Fragment {
         mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-//                Toast.makeText(getActivity(), "" + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                 switch (menuItem.getItemId()) {
                     case R.id.action_edit_profile:
                         Toast.makeText(getActivity(), "Edit profile", Toast.LENGTH_SHORT).show();

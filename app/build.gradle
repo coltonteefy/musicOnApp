@@ -33,4 +33,7 @@ dependencies {
 
     //circle image library
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //bottom navigation
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 }
