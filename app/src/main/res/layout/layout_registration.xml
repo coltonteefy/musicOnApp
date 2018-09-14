@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/registration" />
 
     <EditText
-        android:id="@+id/userNameTxt"
+        android:id="@+id/signUpEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -37,7 +37,7 @@
 
 
     <EditText
-        android:id="@+id/userName"
+        android:id="@+id/signupUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -53,12 +53,12 @@
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userNameTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpEmail" />
 
 
 
     <EditText
-        android:id="@+id/passwordTxt"
+        android:id="@+id/signupPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -74,10 +74,10 @@
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+        app:layout_constraintTop_toBottomOf="@+id/signupUserName" />
 
     <EditText
-        android:id="@+id/confirmPasswordTxt"
+        android:id="@+id/confirmSignupPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -93,7 +93,7 @@
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/signupPassword" />
 
     <Button
         android:id="@+id/createAccountBtn"
@@ -111,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmSignupPassword" />
 
     <Button
         android:id="@+id/haveAccountBtn"

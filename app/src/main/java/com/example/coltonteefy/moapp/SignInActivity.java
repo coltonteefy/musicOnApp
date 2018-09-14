@@ -17,7 +17,7 @@ import com.orhanobut.dialogplus.ViewHolder;
 public class SignInActivity extends AppCompatActivity {
     DialogPlus dialog;
     Button loginBtn, createBtn, createAccountBtn, haveAccountBtn;
-    EditText userNameTxt, passwordTxt;
+    EditText userNameTxt, passwordTxt, signUpEmail, signupUserName, signupPassword, confirmSignupPassword;
     int buttonId;
 
     @Override
@@ -29,6 +29,11 @@ public class SignInActivity extends AppCompatActivity {
         createBtn = findViewById(R.id.createBtn);
         userNameTxt = findViewById(R.id.userNameTxt);
         passwordTxt = findViewById(R.id.passwordTxt);
+
+        signUpEmail = findViewById(R.id.signUpEmail);
+        signupUserName = findViewById(R.id.signupUserName);
+        signupPassword = findViewById(R.id.signupPassword);
+        confirmSignupPassword = findViewById(R.id.confirmSignupPassword);
     }
 
     //    login validation check
@@ -48,7 +53,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void registrationView(View view) {
-        //  setContentView(R.layout.layout_registration);
         userNameTxt.getText().clear();
         passwordTxt.getText().clear();
 
