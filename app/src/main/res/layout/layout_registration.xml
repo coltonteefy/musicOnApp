@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/darkPurple"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".SignInActivity">
 
     <ImageView
         android:id="@+id/registerLogo"
@@ -37,7 +38,7 @@
 
 
     <EditText
-        android:id="@+id/signupUserName"
+        android:id="@+id/signUpUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -58,7 +59,7 @@
 
 
     <EditText
-        android:id="@+id/signupPassword"
+        android:id="@+id/signUpPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -74,10 +75,10 @@
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpUserName" />
 
     <EditText
-        android:id="@+id/confirmSignupPassword"
+        android:id="@+id/confirmSignUpPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -93,7 +94,7 @@
         android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
     <Button
         android:id="@+id/createAccountBtn"
@@ -111,7 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmSignupPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmSignUpPassword" />
 
     <Button
         android:id="@+id/haveAccountBtn"

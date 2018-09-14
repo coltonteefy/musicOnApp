@@ -3,22 +3,34 @@ package com.example.coltonteefy.moapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 
 public class SignInActivity extends AppCompatActivity {
     DialogPlus dialog;
     Button loginBtn, createBtn, createAccountBtn, haveAccountBtn;
-    EditText userNameTxt, passwordTxt, signUpEmail, signupUserName, signupPassword, confirmSignupPassword;
+    EditText userNameTxt, passwordTxt, signUpEmail, signUpUserName, signUpPassword, confirmSignUpPassword;
     int buttonId;
+    String email,userName, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +41,6 @@ public class SignInActivity extends AppCompatActivity {
         createBtn = findViewById(R.id.createBtn);
         userNameTxt = findViewById(R.id.userNameTxt);
         passwordTxt = findViewById(R.id.passwordTxt);
-
-        signUpEmail = findViewById(R.id.signUpEmail);
-        signupUserName = findViewById(R.id.signupUserName);
-        signupPassword = findViewById(R.id.signupPassword);
-        confirmSignupPassword = findViewById(R.id.confirmSignupPassword);
     }
 
     //    login validation check
@@ -68,7 +75,7 @@ public class SignInActivity extends AppCompatActivity {
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(DialogPlus dialog) {
-                        if (buttonId == 2131230781) {
+                        if (buttonId == R.id.createAccountBtn) {
                             createNewAlertDialog(R.layout.dialog_success);
                         }
                     }
@@ -77,13 +84,30 @@ public class SignInActivity extends AppCompatActivity {
 
         dialog.show();
 
+        signUpEmail = findViewById(R.id.signUpEmail);
+        signUpUserName = findViewById(R.id.signUpUserName);
+        signUpPassword = findViewById(R.id.signUpPassword);
+        confirmSignUpPassword = findViewById(R.id.confirmSignUpPassword);
+
         createAccountBtn = findViewById(R.id.createAccountBtn);
         createAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonId = v.getId();
-                dialog.dismiss();
-                createNewAlertDialog(R.layout.dialog_success);
+
+                if (signUpEmail.getText().toString().equals("") || signUpUserName.getText().toString().equals("") || signUpPassword.getText().toString().equals("") || confirmSignUpPassword.getText().toString().equals("")) {
+                    Toast.makeText(SignInActivity.this, "Fill out all fields", Toast.LENGTH_SHORT).show();
+                } else if (!signUpPassword.getText().toString().equals(confirmSignUpPassword.getText().toString())) {
+                    Toast.makeText(SignInActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                } else {
+                    email = String.valueOf(signUpEmail.getText());
+                    userName = String.valueOf(signUpUserName.getText());
+                    password = String.valueOf(signUpPassword.getText());
+                    HttpDataHandler handler = new HttpDataHandler();
+                    handler.setActivity(SignInActivity.this);
+                    handler.postNewUser(email, userName, password);
+                    buttonId = v.getId();
+                    dialog.dismiss();
+                }
             }
         });
 
