@@ -1,28 +1,19 @@
 package com.example.coltonteefy.moapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.example.coltonteefy.moapp.utils.CreateCustomToast;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
 
 
 public class SignInActivity extends AppCompatActivity {
@@ -30,7 +21,8 @@ public class SignInActivity extends AppCompatActivity {
     Button loginBtn, createBtn, createAccountBtn, haveAccountBtn;
     EditText userNameTxt, passwordTxt, signUpEmail, signUpUserName, signUpPassword, confirmSignUpPassword;
     int buttonId;
-    String email,userName, password;
+    String email, userName, password;
+    Activity activity = SignInActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +40,14 @@ public class SignInActivity extends AppCompatActivity {
         String user = String.valueOf(userNameTxt.getText());
         String password = String.valueOf(passwordTxt.getText());
         if (user.equals("") && password.equals("")) {
-            createNewAlertDialog(R.layout.dialog_invalid_user_and_password);
+            CreateCustomToast customToast = new CreateCustomToast();
+            customToast.customToast(R.layout.toast_custom_invalid_user_password, activity);
         } else if (user.equals("") && !password.equals("")) {
-            createNewAlertDialog(R.layout.dialog_invalid_user);
+            CreateCustomToast customToast = new CreateCustomToast();
+            customToast.customToast(R.layout.toast_custom_invalid_user, activity);
         } else if (password.equals("") && !user.equals("")) {
-            createNewAlertDialog(R.layout.dialog_invalid_password);
+            CreateCustomToast customToast = new CreateCustomToast();
+            customToast.customToast(R.layout.toast_custom_invalid_password, activity);
         } else {
             Intent loginSuccess = new Intent(this, MainActivity.class);
             startActivity(loginSuccess);
@@ -76,7 +71,8 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogPlus dialog) {
                         if (buttonId == R.id.createAccountBtn) {
-                            createNewAlertDialog(R.layout.dialog_success);
+                            CreateCustomToast customToast = new CreateCustomToast();
+                            customToast.customToast(R.layout.toast_custom_success, activity);
                         }
                     }
                 })
@@ -95,15 +91,17 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (signUpEmail.getText().toString().equals("") || signUpUserName.getText().toString().equals("") || signUpPassword.getText().toString().equals("") || confirmSignUpPassword.getText().toString().equals("")) {
-                    Toast.makeText(SignInActivity.this, "Fill out all fields", Toast.LENGTH_SHORT).show();
+                    CreateCustomToast customToast = new CreateCustomToast();
+                    customToast.customToast(R.layout.toast_custom_fill_all, activity);
                 } else if (!signUpPassword.getText().toString().equals(confirmSignUpPassword.getText().toString())) {
-                    Toast.makeText(SignInActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+                    CreateCustomToast customToast = new CreateCustomToast();
+                    customToast.customToast(R.layout.toast_custom_password_no_match, activity);
                 } else {
                     email = String.valueOf(signUpEmail.getText());
                     userName = String.valueOf(signUpUserName.getText());
                     password = String.valueOf(signUpPassword.getText());
                     HttpDataHandler handler = new HttpDataHandler();
-                    handler.setActivity(SignInActivity.this);
+                    handler.setActivity(activity);
                     handler.postNewUser(email, userName, password);
                     buttonId = v.getId();
                     dialog.dismiss();
@@ -119,19 +117,6 @@ public class SignInActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-    }
-
-    //  set new custom dialog layout
-    public void createNewAlertDialog(int r) {
-        DialogPlus dialog = DialogPlus.newDialog(SignInActivity.this)
-                .setGravity(Gravity.BOTTOM)
-                .setContentHolder(new ViewHolder(r))
-                .setInAnimation(R.anim.slide_in_bottom)
-                .setOutAnimation(R.anim.slide_out_bottom)
-                .setExpanded(true, 250)  // This will enable the expand feature, (similar to android L share dialog)
-                .create();
-
-        dialog.show();
     }
 }
 
