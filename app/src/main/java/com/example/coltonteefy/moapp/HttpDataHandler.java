@@ -13,10 +13,15 @@ import java.io.IOException;
 
 public class HttpDataHandler {
     private Activity activity;
+    private boolean exist;
 
     public void setActivity(Activity activity) {
+
         this.activity = activity;
     }
+
+
+
 
     public void postNewUser(String email, String user, String password) {
         OkHttpClient client = new OkHttpClient();
@@ -55,5 +60,51 @@ public class HttpDataHandler {
                 }
             }
         });
+    }
+
+
+    public void checkExistingUser(CharSequence s) {
+
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://floating-citadel-31945.herokuapp.com/user/";
+
+        Request request = new Request.Builder()
+                .url(url.concat(s.toString()))
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    final String myResponse = response.body().string();
+
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (myResponse.equals("[]")) {
+                                setExist(false);
+                            } else {
+                                setExist(true);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public boolean isExist() {
+        return exist;
+    }
+
+    public void setExist(boolean exist) {
+        this.exist = exist;
     }
 }
