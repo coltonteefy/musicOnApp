@@ -100,6 +100,47 @@ public class HttpDataHandler {
         });
     }
 
+
+    public void checkExistingEmail(String email) {
+
+        // TODO: 10/10/18 finish server side to reset user password
+
+//        OkHttpClient client = new OkHttpClient();
+//
+//        String url = "https://localhost:5000/userByEmail/";
+//
+//        Request request = new Request.Builder()
+//                .url(url.concat(email.toString()))
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Request request, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Response response) throws IOException {
+//
+//                if (response.isSuccessful()) {
+//                    final String myResponse = response.body().string();
+//
+//                    activity.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (myResponse.equals("[]")) {
+//                                setExist(false);
+//                            } else {
+//                                setExist(true);
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        });
+    }
+
+
     public boolean isExist() {
         return exist;
     }

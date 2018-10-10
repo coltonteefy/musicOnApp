@@ -78,11 +78,7 @@ public class SignInActivity extends AppCompatActivity {
                             SignInActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (myResponse.equals("[]")) {
-                                        userExist = false;
-                                    } else {
-                                        userExist = true;
-                                    }
+                                    userExist = !myResponse.equals("[]");
                                 }
                             });
                         }
@@ -111,14 +107,14 @@ public class SignInActivity extends AppCompatActivity {
         String password = String.valueOf(passwordTxt.getText());
         if (user.equals("") && password.equals("")) {
             CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_invalid_user_password, activity);
+            customToast.customToast(R.layout.toast_custom_empty_user_password, activity);
         } else if (user.equals("") && !password.equals("")) {
             CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_invalid_user, activity);
+            customToast.customToast(R.layout.toast_custom_empty_user, activity);
         } else if (password.equals("") && !user.equals("")) {
             CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_invalid_password, activity);
-        } else if(!userExist) {
+            customToast.customToast(R.layout.toast_custom_empty_password, activity);
+        } else if (!userExist) {
             CreateCustomToast customToast = new CreateCustomToast();
             customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
         } else {
@@ -193,6 +189,85 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
+    public void forgotPasswordView(View view) {
+        userNameTxt.getText().clear();
+        passwordTxt.getText().clear();
+
+        dialog = DialogPlus.newDialog(this)
+                .setGravity(Gravity.CENTER)
+                .setContentHolder(new ViewHolder(R.layout.layout_forgot_password_email))
+                .setInAnimation(R.anim.slide_in_bottom)
+                .setOutAnimation(R.anim.slide_out_bottom)
+                .setContentWidth(ViewGroup.LayoutParams.MATCH_PARENT)  // or any custom width ie: 300
+                .setContentHeight(ViewGroup.LayoutParams.MATCH_PARENT)
+                .setContentBackgroundResource(R.color.darkPurple)
+                .setMargin(0, 0, 0, 0)
+                .setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogPlus dialog) {
+
+                    }
+                })
+                .create();
+
+        dialog.show();
+
+        final EditText resetEmail = findViewById(R.id.resetEmail);
+
+        Button resetPassBtn = findViewById(R.id.resetPassBtn);
+        resetPassBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 10/10/18 finish server side to reset user password
+
+//                OkHttpClient client = new OkHttpClient();
+//
+//                String url = "https://localhost:5000/userByEmail/";
+//
+//                Request request = new Request.Builder()
+//                        .url(url.concat(resetEmail.getText().toString()))
+//                        .build();
+//
+//                client.newCall(request).enqueue(new Callback() {
+//                    @Override
+//                    public void onFailure(Request request, IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onResponse(Response response) throws IOException {
+//
+//                        if (response.isSuccessful()) {
+//                            final String myResponse = response.body().string();
+//
+//                            activity.runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (myResponse.equals("[]")) {
+//                                        Toast.makeText(activity, resetEmail.getText() + " does not exist", Toast.LENGTH_SHORT).show();
+//
+//                                    } else {
+//                                        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show();
+//
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+            }
+        });
+
+        Button cancel = findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
     public void getUser(String user) {
         OkHttpClient client = new OkHttpClient();
 
@@ -234,17 +309,46 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    public void forgotClick(View view) {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"coltonteefy@yahoo.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Password Change");
-        i.putExtra(Intent.EXTRA_TEXT   , "Did you forget your password?");
-        try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(activity, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
+    public void forgotClick() {
+        // TODO: 10/10/18 finish server side to reset user password
+//        OkHttpClient client = new OkHttpClient();
+//
+//        String url = "https://floating-citadel-31945.herokuapp.com/forgotPassEmail";
+//
+//        RequestBody body = new FormEncodingBuilder()
+//                .add("userEmail", userEmail)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .post(body)
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Request request, IOException e) {
+//
+//                e.printStackTrace();
+//                Toast.makeText(activity, "Fail", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Response response) throws IOException {
+//
+//                if (response.isSuccessful()) {
+//                    final String myResponse = response.body().string();
+//                    Toast.makeText(activity, "response " + myResponse, Toast.LENGTH_SHORT).show();
+//
+//
+//                    activity.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                        }
+//                    });
+//                }
+//            }
+//        });
     }
 }
 
