@@ -76,6 +76,7 @@ public class HttpDataHandler {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
+
                 e.printStackTrace();
             }
 
@@ -142,10 +143,12 @@ public class HttpDataHandler {
 
 
     public boolean isExist() {
+
         return exist;
     }
 
     public void setExist(boolean exist) {
+
         this.exist = exist;
     }
 }
