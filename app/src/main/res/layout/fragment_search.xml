@@ -2,13 +2,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient_background">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/search_bar"
+        android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_search"/>
+
+        <EditText
+            android:id="@+id/edt_search_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:hint="@string/search"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:lines="1"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:background="@android:color/transparent"/>
+
+        <ImageView
+            android:id="@+id/clear_text"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:adjustViewBounds="true"
+            android:visibility="gone"
+            android:src="@drawable/ic_clear"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="526dp"
+        android:layout_alignEnd="@+id/search_bar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/search_bar" />
+
 
 </RelativeLayout>
