@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.utils.CreateCustomToast;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -30,7 +28,7 @@ import java.io.IOException;
 public class SignInActivity extends AppCompatActivity {
     DialogPlus dialog;
     Button loginBtn, createBtn, createAccountBtn, haveAccountBtn, forgotPasswordBtn;
-    EditText userNameTxt, passwordTxt, signUpEmail, signUpUserName, signUpPassword, confirmSignUpPassword;
+    EditText userNameInputTxt, passwordInputTxt, signUpEmail, signUpUserName, signUpPassword, confirmSignUpPassword;
     int buttonId;
     String email, userName, password;
     Activity activity = SignInActivity.this;
@@ -43,89 +41,78 @@ public class SignInActivity extends AppCompatActivity {
 
         loginBtn = findViewById(R.id.loginBtn);
         createBtn = findViewById(R.id.createBtn);
-        userNameTxt = findViewById(R.id.userNameTxt);
-        passwordTxt = findViewById(R.id.passwordTxt);
+        userNameInputTxt = findViewById(R.id.userNameTxt);
+        passwordInputTxt = findViewById(R.id.passwordTxt);
         forgotPasswordBtn = findViewById(R.id.forgotPasswordBtn);
 
-        userNameTxt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onClick(View v) {
                 OkHttpClient client = new OkHttpClient();
+                final String userInput = userNameInputTxt.getText().toString();
+                final String pwInput = passwordInputTxt.getText().toString();
 
-                String url = "https://floating-citadel-31945.herokuapp.com/user/";
+                String url = "https://kennesawserver.herokuapp.com/signin";
+                RequestBody body = new FormEncodingBuilder()
+                        .add("Username", userInput)
+                        .add("Password", pwInput)
+                        .build();
+
 
                 Request request = new Request.Builder()
-                        .url(url.concat(s.toString()))
+                        .url(url)
+                        .post(body)
                         .build();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Request request, IOException e) {
-                        e.printStackTrace();
+
                     }
 
                     @Override
                     public void onResponse(Response response) throws IOException {
 
                         if (response.isSuccessful()) {
-                            final String myResponse = response.body().string();
 
-                            SignInActivity.this.runOnUiThread(new Runnable() {
+                            final String message = response.body().string();
+
+                            activity.runOnUiThread(new Runnable() {
+                                CreateCustomToast customToast = new CreateCustomToast();
                                 @Override
                                 public void run() {
-                                    userExist = !myResponse.equals("[]");
+                                    if (userInput.equals("") || pwInput.equals("")) {
+                                        customToast.customToast(R.layout.toast_custom_empty_user_password, activity);
+                                    } else {
+                                        switch (message) {
+                                            case "ok":
+                                                Intent loginSuccess = new Intent(SignInActivity.this, MainActivity.class);
+                                                startActivity(loginSuccess);
+                                                break;
+                                            case "pwwrong":
+                                                Log.i("why", "wrong password");
+                                                customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
+                                                break;
+                                            case "nouser":
+                                                Log.i("why", "no username");
+                                                customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
+                                                break;
+                                        }
+                                    }
                                 }
                             });
                         }
                     }
                 });
-
-//                HttpDataHandler dataHandler = new HttpDataHandler();
-//                dataHandler.setActivity(activity);
-//                dataHandler.checkExistingUser(s);
-//                userExist = dataHandler.isExist();
-//                if(userExist) {
-//                    Toast.makeText(activity, "true", Toast.LENGTH_SHORT).show();
-//                } else
-//                    Toast.makeText(activity, "false", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
             }
         });
     }
 
-    //    login validation check
-    public void loginClick(View view) {
-        String user = String.valueOf(userNameTxt.getText());
-        String password = String.valueOf(passwordTxt.getText());
-        if (user.equals("") && password.equals("")) {
-            CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_empty_user_password, activity);
-        } else if (user.equals("") && !password.equals("")) {
-            CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_empty_user, activity);
-        } else if (password.equals("") && !user.equals("")) {
-            CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_empty_password, activity);
-        } else if (!userExist) {
-            CreateCustomToast customToast = new CreateCustomToast();
-            customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
-        } else {
-            Intent loginSuccess = new Intent(this, MainActivity.class);
-            startActivity(loginSuccess);
-        }
-    }
 
     public void registrationView(View view) {
-        userNameTxt.getText().clear();
-        passwordTxt.getText().clear();
+        userNameInputTxt.getText().clear();
+        passwordInputTxt.getText().clear();
 
         dialog = DialogPlus.newDialog(this)
                 .setGravity(Gravity.CENTER)
@@ -190,8 +177,8 @@ public class SignInActivity extends AppCompatActivity {
 
 
     public void forgotPasswordView(View view) {
-        userNameTxt.getText().clear();
-        passwordTxt.getText().clear();
+        userNameInputTxt.getText().clear();
+        passwordInputTxt.getText().clear();
 
         dialog = DialogPlus.newDialog(this)
                 .setGravity(Gravity.CENTER)
@@ -268,46 +255,46 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    public void getUser(String user) {
-        OkHttpClient client = new OkHttpClient();
-
-        String url = "https://floating-citadel-31945.herokuapp.com/user";
-
-        RequestBody body = new FormEncodingBuilder()
-                .add("userName", user)
-                .build();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-
-                e.printStackTrace();
-                Toast.makeText(activity, "Fail", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().string();
-                    Toast.makeText(activity, "response " + myResponse, Toast.LENGTH_SHORT).show();
-
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                        }
-                    });
-                }
-            }
-        });
-    }
+//    public void getUser(String user) {
+//        OkHttpClient client = new OkHttpClient();
+//
+//        String url = "https://floating-citadel-31945.herokuapp.com/user";
+//
+//        RequestBody body = new FormEncodingBuilder()
+//                .add("userName", user)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .post(body)
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Request request, IOException e) {
+//
+//                e.printStackTrace();
+//                Toast.makeText(activity, "Fail", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Response response) throws IOException {
+//
+//                if (response.isSuccessful()) {
+//                    final String myResponse = response.body().string();
+//                    Toast.makeText(activity, "response " + myResponse, Toast.LENGTH_SHORT).show();
+//
+//
+//                    activity.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//    }
 
     public void forgotClick() {
         // TODO: 10/10/18 finish server side to reset user password

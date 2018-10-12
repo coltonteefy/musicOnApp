@@ -62,7 +62,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), artistName.getText()  + "" + songName.getText(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), artistName.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
 

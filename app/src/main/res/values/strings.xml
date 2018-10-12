@@ -20,7 +20,7 @@
     <string name="cancel">Cancel</string>
     <string name="reset_password">Reset password</string>
     <string name="username_or_password_invalid">Username or password invalid!</string>
-    <string name="username_and_password_field_are_empty">Username and password field are empty!</string>
+    <string name="username_and_password_field_are_empty">Username or password field are empty!</string>
     <string name="user_field_empty">User field empty!</string>
     <string name="password_field_empty">Password field empty!</string>
     <string name="home">Home</string>
