@@ -3,7 +3,6 @@
 
     <string name="search">Search</string>
     <string name="play">Play</string>
-    <string name="upload">Upload</string>
     <string name="profile">Profile</string>
     <string name="log_in">Log in</string>
     <string name="remember_me">Remember me</string>
@@ -26,4 +25,27 @@
     <string name="home">Home</string>
     <string name="artist">Artist</string>
     <string name="song">Song</string>
+    <string name="username_or_email_already_exist_please_try_again">Username or Email already exist. Please try again</string>
+    <string name="choose_a_file">Choose a file</string>
+    <string name="no_file_chosen">No file chosen</string>
+    <string name="upload">Upload</string>
+    <string name="start_upload_process">Start upload process</string>
+    <string name="file_chosen_to_upload">File chosen to upload</string>
+
+    <string-array name="genres">
+        <item>Alternative</item>
+        <item>Blues</item>
+        <item>Classical</item>
+        <item>Country</item>
+        <item>Dance</item>
+        <item>Electronic</item>
+        <item>Hip Hop/Rap</item>
+        <item>Experimental</item>
+        <item>Jazz</item>
+        <item>Indie</item>
+        <item>Soul</item>
+        <item>Rock</item>
+        <item>Metal</item>
+        <item>Reggae</item>
+    </string-array>
 </resources>

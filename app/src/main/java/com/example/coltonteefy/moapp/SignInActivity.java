@@ -10,22 +10,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.utils.CreateCustomToast;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+
 
 import java.io.IOException;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 
 public class SignInActivity extends AppCompatActivity {
+    private final String TAG = "SignInActivity";
     DialogPlus dialog;
     Button loginBtn, createBtn, createAccountBtn, haveAccountBtn, forgotPasswordBtn;
     EditText userNameInputTxt, passwordInputTxt, signUpEmail, signUpUserName, signUpPassword, confirmSignUpPassword;
@@ -53,26 +58,28 @@ public class SignInActivity extends AppCompatActivity {
                 final String userInput = userNameInputTxt.getText().toString();
                 final String pwInput = passwordInputTxt.getText().toString();
 
-                String url = "https://kennesawserver.herokuapp.com/signin";
-                RequestBody body = new FormEncodingBuilder()
-                        .add("Username", userInput)
-                        .add("Password", pwInput)
-                        .build();
+                String url = "https://afternoon-waters-54974.herokuapp.com/login";
+
+                FormBody.Builder formBuilder = new FormBody.Builder()
+                        .add("username", userInput)
+                        .add("password", pwInput);
+
+                RequestBody requestBody = formBuilder.build();
 
 
                 Request request = new Request.Builder()
                         .url(url)
-                        .post(body)
+                        .post(requestBody)
                         .build();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
-                    public void onFailure(Request request, IOException e) {
+                    public void onFailure(Call call, IOException e) {
 
                     }
 
                     @Override
-                    public void onResponse(Response response) throws IOException {
+                    public void onResponse(Call call, Response response) throws IOException {
 
                         if (response.isSuccessful()) {
 
@@ -86,16 +93,16 @@ public class SignInActivity extends AppCompatActivity {
                                         customToast.customToast(R.layout.toast_custom_empty_user_password, activity);
                                     } else {
                                         switch (message) {
-                                            case "ok":
+                                            case "success":
                                                 Intent loginSuccess = new Intent(SignInActivity.this, MainActivity.class);
                                                 startActivity(loginSuccess);
                                                 break;
-                                            case "pwwrong":
-                                                Log.i("why", "wrong password");
+                                            case "Invalid password":
+                                                Log.i(TAG, "wrong password");
                                                 customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
                                                 break;
-                                            case "nouser":
-                                                Log.i("why", "no username");
+                                            case "Not a valid user":
+                                                Log.i(TAG, "no username");
                                                 customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
                                                 break;
                                         }
@@ -156,11 +163,60 @@ public class SignInActivity extends AppCompatActivity {
                     email = String.valueOf(signUpEmail.getText());
                     userName = String.valueOf(signUpUserName.getText());
                     password = String.valueOf(signUpPassword.getText());
-                    HttpDataHandler handler = new HttpDataHandler();
-                    handler.setActivity(activity);
-                    handler.postNewUser(email, userName, password);
                     buttonId = v.getId();
-                    dialog.dismiss();
+
+
+                    OkHttpClient client = new OkHttpClient();
+
+                    String url = "https://afternoon-waters-54974.herokuapp.com/register";
+
+                    FormBody.Builder formBuilder = new FormBody.Builder()
+                            .add("email", email)
+                            .add("username", userName)
+                            .add("password", password);
+
+                    RequestBody requestBody = formBuilder.build();
+
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(requestBody)
+                            .build();
+
+
+                    client.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            final String message = response.body().string();
+
+                            Log.i(TAG, "Response message: " + message);
+
+                            activity.runOnUiThread(new Runnable() {
+                                CreateCustomToast customToast = new CreateCustomToast();
+
+                                @Override
+                                public void run() {
+                                    switch (message) {
+                                        case "register success":
+                                            dialog.dismiss();
+                                            break;
+                                        case "Username or email already exists":
+                                            customToast.customToast(R.layout.toast_custom_user_already_exists, activity);
+                                            break;
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
+
+
+
                 }
             }
         });

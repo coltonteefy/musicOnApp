@@ -1,19 +1,26 @@
 package com.example.coltonteefy.moapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.home.HomeFragment;
 import com.example.coltonteefy.moapp.play.PlayFragment;
 import com.example.coltonteefy.moapp.profile.ProfileFragment;
 import com.example.coltonteefy.moapp.search.SearchFragment;
 import com.example.coltonteefy.moapp.upload.UploadFragment;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
@@ -50,35 +57,60 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.action_home:
-                            BottomNavHelper.enterRightLeaveLeft(active, fragment1, fm);
-                            active = fragment1;
-                            activePosition = 1;
+                            if (activePosition != 1) {
+                                BottomNavHelper.enterRightLeaveLeft(active, fragment1, fm);
+                                active = fragment1;
+                                activePosition = 1;
+                            }
                             break;
                         case R.id.action_search:
-                            futurePosition = 2;
-                            BottomNavHelper.fragmentTransition(active, fragment2, fm, activePosition, futurePosition);
-                            active = fragment2;
-                            activePosition = 2;
+                            if (activePosition != 2) {
+                                futurePosition = 2;
+                                BottomNavHelper.fragmentTransition(active, fragment2, fm, activePosition, futurePosition);
+                                active = fragment2;
+                                activePosition = 2;
+                            }
                             break;
                         case R.id.action_play:
-                            futurePosition = 3;
-                            BottomNavHelper.fragmentTransition(active, fragment3, fm, activePosition, futurePosition);
-                            active = fragment3;
-                            activePosition = 3;
+                            if (activePosition != 3) {
+                                futurePosition = 3;
+                                BottomNavHelper.fragmentTransition(active, fragment3, fm, activePosition, futurePosition);
+                                active = fragment3;
+                                activePosition = 3;
+                            }
                             break;
                         case R.id.action_upload:
-                            futurePosition = 4;
-                            BottomNavHelper.fragmentTransition(active, fragment4, fm, activePosition, futurePosition);
-                            active = fragment4;
-                            activePosition = 4;
+                            if (activePosition != 4) {
+                                futurePosition = 4;
+                                BottomNavHelper.fragmentTransition(active, fragment4, fm, activePosition, futurePosition);
+                                active = fragment4;
+                                activePosition = 4;
+                            }
                             break;
                         case R.id.action_profile:
-                            BottomNavHelper.enterLeftLeaveRight(active, fragment5, fm);
-                            active = fragment5;
-                            activePosition = 5;
+                            if (activePosition != 5) {
+                                BottomNavHelper.enterLeftLeaveRight(active, fragment5, fm);
+                                active = fragment5;
+                                activePosition = 5;
+                            }
                             break;
                     }
                     return true;
                 }
             };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1000 && resultCode == RESULT_OK) {
+            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            Log.d(TAG, "onActivityResult: File.. " + filePath);
+
+            Intent intent = new Intent();
+            intent.setAction("file");
+            intent.putExtra("filePath", filePath);
+            LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(intent);
+        }
+    }
 }

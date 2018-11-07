@@ -15,12 +15,14 @@ import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.R;
 
+import java.io.IOException;
+
 public class PlayFragment extends Fragment {
 
-    Button playBtn, rewind, fastForward;
+    Button playBtn, previousBtn, nextBtn;
     SeekBar songPositionBar;
     TextView elapsedTimeLabel, totalTimeLabel;
-    MediaPlayer mp;
+    MediaPlayer mediaPlayer;
     String tmpTimeLabel, tmpUpdateTime;
     Boolean isPlaying = false;
     int min, sec;
@@ -38,25 +40,35 @@ public class PlayFragment extends Fragment {
         songPositionBar = view.findViewById(R.id.songPositionBar);
 
         //  media player
-        mp = MediaPlayer.create(getActivity(), R.raw.boris_brejcha_purple_noise_id0001);
-        mp.seekTo(0);
-        mp.setVolume(0.5f, 0.5f);
+//        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.boris_brejcha_purple_noise_id0001);
+        mediaPlayer = new MediaPlayer();
 
-        totalTime(mp.getDuration());
-        songPositionBar.setMax(mp.getDuration());
+        try {
+            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1541199248759waitforyoulove.m4a");
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        mediaPlayer.seekTo(0);
+        mediaPlayer.setVolume(0.5f, 0.5f);
+
+        totalTime(mediaPlayer.getDuration());
+        songPositionBar.setMax(mediaPlayer.getDuration());
 
         //  play/pause controller
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setLooping(true);
-                if (!mp.isPlaying()) {
-                    mp.start();
+                mediaPlayer.setLooping(true);
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
                     playBtn.setBackgroundResource(R.drawable.ic_pause_button);
                     isPlaying = true;
                     myHandler.postDelayed(UpdateSongTime, 100);
                 } else {
-                    mp.pause();
+                    mediaPlayer.pause();
                     playBtn.setBackgroundResource(R.drawable.ic_play_button);
                     isPlaying = false;
                 }
@@ -69,7 +81,7 @@ public class PlayFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mp.seekTo(progress);
+                    mediaPlayer.seekTo(progress);
                     songPositionBar.setProgress(progress);
                 }
             }
@@ -85,6 +97,23 @@ public class PlayFragment extends Fragment {
             }
         });
 
+        nextBtn = view.findViewById(R.id.nextBtn);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "NEXT SONG", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        previousBtn = view.findViewById(R.id.previousBtn);
+        previousBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "PREVIOUS SONG", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
@@ -92,7 +121,7 @@ public class PlayFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         Toast.makeText(getActivity(), "DESTROYED", Toast.LENGTH_SHORT).show();
-        mp.stop();
+        mediaPlayer.stop();
     }
 
     public void totalTime(int time) {
@@ -121,9 +150,9 @@ public class PlayFragment extends Fragment {
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            startTime = mp.getCurrentPosition();
-            updateTimeElapsed(mp.getCurrentPosition());
-            songPositionBar.setProgress(mp.getCurrentPosition());
+            startTime = mediaPlayer.getCurrentPosition();
+            updateTimeElapsed(mediaPlayer.getCurrentPosition());
+            songPositionBar.setProgress(mediaPlayer.getCurrentPosition());
             myHandler.postDelayed(this, 100);
         }
     };

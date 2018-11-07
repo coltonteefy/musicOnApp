@@ -1,154 +1,83 @@
 package com.example.coltonteefy.moapp;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class HttpDataHandler {
     private Activity activity;
-    private boolean exist;
+    private boolean userExists;
 
     public void setActivity(Activity activity) {
-
         this.activity = activity;
     }
 
 
-
-
-    public void postNewUser(String email, String user, String password) {
+    public void postNewUser(String user, String password, String email) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = "https://floating-citadel-31945.herokuapp.com/addUser";
+        String url = "https://afternoon-waters-54974.herokuapp.com/register";
 
-        RequestBody body = new FormEncodingBuilder()
-                .add("userEmail", email)
-                .add("userName", user)
-                .add("userPassword", password)
-                .build();
+        FormBody.Builder formBuilder = new FormBody.Builder()
+                .add("email", email)
+                .add("username", user)
+                .add("password", password);
+
+        RequestBody requestBody = formBuilder.build();
 
         Request request = new Request.Builder()
                 .url(url)
-                .post(body)
+                .post(requestBody)
                 .build();
+
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                e.printStackTrace();
+            public void onFailure(Call call, IOException e) {
+
             }
 
             @Override
-            public void onResponse(Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException {
+                final String message = response.body().string();
+                Log.i("why", message);
 
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().string();
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (message.equals("register success")) {
+                            setExist(false);
+                        } else {
+                            setExist(true);
                         }
-                    });
-                }
+                    }
+                });
             }
         });
+
+
     }
 
 
-    public void checkExistingUser(CharSequence s) {
+    public boolean getUserExists() {
 
-        OkHttpClient client = new OkHttpClient();
-
-        String url = "https://floating-citadel-31945.herokuapp.com/user/";
-
-        Request request = new Request.Builder()
-                .url(url.concat(s.toString()))
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    final String myResponse = response.body().string();
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (myResponse.equals("[]")) {
-                                setExist(false);
-                            } else {
-                                setExist(true);
-                            }
-                        }
-                    });
-                }
-            }
-        });
+        return userExists;
     }
 
+    private void setExist(boolean exist) {
 
-    public void checkExistingEmail(String email) {
-
-        // TODO: 10/10/18 finish server side to reset user password
-
-//        OkHttpClient client = new OkHttpClient();
-//
-//        String url = "https://localhost:5000/userByEmail/";
-//
-//        Request request = new Request.Builder()
-//                .url(url.concat(email.toString()))
-//                .build();
-//
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Request request, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Response response) throws IOException {
-//
-//                if (response.isSuccessful()) {
-//                    final String myResponse = response.body().string();
-//
-//                    activity.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (myResponse.equals("[]")) {
-//                                setExist(false);
-//                            } else {
-//                                setExist(true);
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-    }
-
-
-    public boolean isExist() {
-
-        return exist;
-    }
-
-    public void setExist(boolean exist) {
-
-        this.exist = exist;
+        userExists = exist;
     }
 }

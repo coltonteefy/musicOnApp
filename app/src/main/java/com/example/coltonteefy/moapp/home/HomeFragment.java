@@ -39,8 +39,8 @@ public class HomeFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_home, container,false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         allSampleData = new ArrayList<SectionDataModel>();
 
@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
 
 
     public void createDummyData() {
-        for (int i = 0; i <= musicGenres.size()-1; i++) {
+        for (int i = 0; i <= musicGenres.size() - 1; i++) {
 
             SectionDataModel dm = new SectionDataModel();
 
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
 
             ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
             for (int j = 0; j <= 10; j++) {
-                singleItem.add(new SingleItemModel("TEST", "Song Name", "URL " + j));
+                singleItem.add(new SingleItemModel("Artist" + j, "Song Name", "URL " + j));
             }
 
             dm.setAllItemsInSection(singleItem);
