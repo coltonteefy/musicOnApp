@@ -44,7 +44,7 @@ public class PlayFragment extends Fragment {
         mediaPlayer = new MediaPlayer();
 
         try {
-            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1541199248759waitforyoulove.m4a");
+            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1541573753303hands+up.mp3");
             mediaPlayer.prepare();
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,10 +139,10 @@ public class PlayFragment extends Fragment {
     public void updateTimeElapsed(int time) {
         min = time / 1000 / 60;
         sec = time / 1000 % 60;
-        tmpUpdateTime = min + ":";
+        tmpUpdateTime = min + getString(R.string.colon);
 
         if (sec < 10) {
-            tmpUpdateTime += "0";
+            tmpUpdateTime += getString(R.string.zero);
         }
         tmpUpdateTime += sec;
         elapsedTimeLabel.setText(tmpUpdateTime);

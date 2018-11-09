@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.utils.CreateCustomToast;
@@ -37,6 +38,7 @@ public class SignInActivity extends AppCompatActivity {
     int buttonId;
     String email, userName, password;
     Activity activity = SignInActivity.this;
+    ProgressBar loginProgressBar;
     boolean userExist = false;
 
     @Override
@@ -49,11 +51,15 @@ public class SignInActivity extends AppCompatActivity {
         userNameInputTxt = findViewById(R.id.userNameTxt);
         passwordInputTxt = findViewById(R.id.passwordTxt);
         forgotPasswordBtn = findViewById(R.id.forgotPasswordBtn);
+        loginProgressBar = findViewById(R.id.loginProgressBar);
 
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginBtn.setVisibility(View.GONE);
+                loginProgressBar.setVisibility(View.VISIBLE);
+
                 OkHttpClient client = new OkHttpClient();
                 final String userInput = userNameInputTxt.getText().toString();
                 final String pwInput = passwordInputTxt.getText().toString();
@@ -91,6 +97,8 @@ public class SignInActivity extends AppCompatActivity {
                                 public void run() {
                                     if (userInput.equals("") || pwInput.equals("")) {
                                         customToast.customToast(R.layout.toast_custom_empty_user_password, activity);
+                                        loginBtn.setVisibility(View.VISIBLE);
+                                        loginProgressBar.setVisibility(View.GONE);
                                     } else {
                                         switch (message) {
                                             case "success":
@@ -100,10 +108,14 @@ public class SignInActivity extends AppCompatActivity {
                                             case "Invalid password":
                                                 Log.i(TAG, "wrong password");
                                                 customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
+                                                loginBtn.setVisibility(View.VISIBLE);
+                                                loginProgressBar.setVisibility(View.GONE);
                                                 break;
                                             case "Not a valid user":
                                                 Log.i(TAG, "no username");
                                                 customToast.customToast(R.layout.toast_custom_user_no_exist, activity);
+                                                loginBtn.setVisibility(View.VISIBLE);
+                                                loginProgressBar.setVisibility(View.GONE);
                                                 break;
                                         }
                                     }
@@ -115,7 +127,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void registrationView(View view) {
         userNameInputTxt.getText().clear();

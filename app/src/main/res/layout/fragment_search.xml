@@ -14,6 +14,7 @@
         android:paddingRight="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -53,6 +54,8 @@
         android:layout_height="526dp"
         android:layout_alignEnd="@+id/search_bar"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_alignRight="@+id/search_bar" />
 
 

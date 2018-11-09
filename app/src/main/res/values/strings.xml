@@ -31,6 +31,8 @@
     <string name="upload">Upload</string>
     <string name="start_upload_process">Start upload process</string>
     <string name="file_chosen_to_upload">File chosen to upload</string>
+    <string name="zero">0</string>
+    <string name="colon">:</string>
 
     <string-array name="genres">
         <item>Alternative</item>

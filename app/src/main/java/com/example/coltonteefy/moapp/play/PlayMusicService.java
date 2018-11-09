@@ -47,9 +47,9 @@ public class PlayMusicService extends Service {
             e.printStackTrace();
         }
 
-
-        mediaPlayer.seekTo(0);
-        mediaPlayer.setVolume(0.5f, 0.5f);
+//
+//        mediaPlayer.seekTo(0);
+//        mediaPlayer.setVolume(0.5f, 0.5f);
 
         mediaPlayer.setLooping(true);
     }
