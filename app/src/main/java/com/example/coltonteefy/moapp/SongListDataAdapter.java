@@ -12,12 +12,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
+public class SongListDataAdapter extends RecyclerView.Adapter<SongListDataAdapter.SingleItemRowHolder> {
 
     private ArrayList<SingleItemModel> itemsList;
     private Context mContext;
 
-    public SectionListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
+    public SongListDataAdapter(Context context, ArrayList<SingleItemModel> itemsList) {
         this.itemsList = itemsList;
         this.mContext = context;
     }

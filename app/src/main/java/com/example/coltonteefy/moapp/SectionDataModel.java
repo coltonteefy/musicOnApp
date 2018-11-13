@@ -29,6 +29,7 @@ public class SectionDataModel {
     }
 
     public ArrayList<SingleItemModel> getAllItemsInSection() {
+
         return allItemsInSection;
     }
 
