@@ -24,6 +24,7 @@ import com.example.coltonteefy.moapp.R;
 import com.example.coltonteefy.moapp.RecyclerViewDataAdapter;
 import com.example.coltonteefy.moapp.SectionDataModel;
 import com.example.coltonteefy.moapp.SingleItemModel;
+import com.example.coltonteefy.moapp.profile.ProfileRecylerViewAdapater;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +67,15 @@ public class HomeFragment extends Fragment {
 
     ArrayList<String> userNames = new ArrayList<>();
 
+    private ArrayList<String> mID = new ArrayList<>();
+    private ArrayList<String> mArtist = new ArrayList<>();
+    private ArrayList<String> mTitle = new ArrayList<>();
+    private ArrayList<String> mGenre = new ArrayList<>();
+    private ArrayList<String> mcoverArtUrl = new ArrayList<>();
+    private ArrayList<String> msongUrl = new ArrayList<>();
+
+    private RecyclerView recyclerView;
+
 
     @Nullable
     @Override
@@ -75,8 +85,10 @@ public class HomeFragment extends Fragment {
 //        allSampleData = new ArrayList<SectionDataModel>();
 //        usernames = new ArrayList<String>();
 
-        createDummyData();
+//        createDummyData();
 //        new OkHttpAsync().execute();
+
+        getAllUserMusic();
 
         home_recycler_view = view.findViewById(R.id.home_recycler_view);
         home_recycler_view.setHasFixedSize(true);
@@ -85,7 +97,7 @@ public class HomeFragment extends Fragment {
         home_recycler_view.setAdapter(adapter);
 
 
-        LocalBroadcastManager.getInstance(view.getContext()).registerReceiver(broadcastReceiver, new IntentFilter("users"));
+//        LocalBroadcastManager.getInstance(view.getContext()).registerReceiver(broadcastReceiver, new IntentFilter("users"));
 
         return view;
     }
@@ -111,77 +123,136 @@ public class HomeFragment extends Fragment {
     }
 
 
-//    class OkHttpAsync extends AsyncTask<Object, Void, Object> {
-//
-//        @Override
-//        protected Object doInBackground(Object... objects) {
-//            String url = "https://afternoon-waters-54974.herokuapp.com/getAllMusic";
-//            OkHttpClient client = new OkHttpClient();
-//            Request request = new Request.Builder()
-//                    .url(url)
-//                    .build();
-//
-//            client.newCall(request).enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    try {
-//                        JSONArray jsonArray = new JSONArray(response.body().string());
-//
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                            userNames.add(jsonObject.get("username").toString());
-////                            Log.d(TAG, "\n" + jsonObject.get("username") + " " + jsonObject.get("userMusic"));
-//                        }
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Object o) {
-//            super.onPostExecute(o);
-////            Log.d(TAG, "USERNAMES " + usernames.size());
-//
-//            for(int i = 0; i < userNames.size(); i++) {
-//                Log.d(TAG, "USERNAMES " + userNames.get(i));
-//            }
-//
-//        }
-//    }
+    class OkHttpAsync extends AsyncTask<Object, Void, Object> {
 
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            userNames = intent.getStringArrayListExtra("eachUser");
-            Log.d(TAG, "HomeFragReceive: " + userNames);
+        protected Object doInBackground(Object... objects) {
+            String url = "https://afternoon-waters-54974.herokuapp.com/getAllMusic";
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
 
-            if(userNames.size() > 0) {
-                for (int i = 0; i <= userNames.size() - 1; i++) {
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
 
-                    SectionDataModel dm = new SectionDataModel();
+                }
 
-                    dm.setHeaderTitle(userNames.get(i));
-                    Log.d(TAG, "U " + userNames.get(i));
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response.body().string());
 
-                    ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
-                    for (int j = 0; j <= 2; j++) {
-                        singleItem.add(new SingleItemModel("Artist" + j, "Song Name", "URL " + j));
-                        Log.d(TAG, "item " + singleItem.get(j));
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                            userNames.add(jsonObject.get("userMusic").toString());
+                            Log.d(TAG, "\n" + jsonObject.get("userMusic"));
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    dm.setAllItemsInSection(singleItem);
-                    allSampleData.add(dm);
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+//            Log.d(TAG, "USERNAMES " + usernames.size());
+
+            for(int i = 0; i < userNames.size(); i++) {
+//                Log.d(TAG, "USERNAMES " + userNames.get(i));
+            }
+
+        }
+    }
+
+
+//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            userNames = intent.getStringArrayListExtra("eachUser");
+//            Log.d(TAG, "HomeFragReceive: " + userNames);
+//
+//            if(userNames.size() > 0) {
+//                for (int i = 0; i <= userNames.size() - 1; i++) {
+//
+//                    SectionDataModel dm = new SectionDataModel();
+//
+//                    dm.setHeaderTitle(userNames.get(i));
+//                    Log.d(TAG, "U " + userNames.get(i));
+//
+//                    ArrayList<SingleItemModel> singleItem = new ArrayList<SingleItemModel>();
+//                    for (int j = 0; j <= 2; j++) {
+//                        singleItem.add(new SingleItemModel("Artist" + j, "Song Name", "URL " + j));
+//                        Log.d(TAG, "item " + singleItem.get(j));
+//                    }
+//                    dm.setAllItemsInSection(singleItem);
+//                    allSampleData.add(dm);
+//                }
+//            }
+//        }
+//    };
+
+
+
+    public void getAllUserMusic() {
+
+        String url = "https://afternoon-waters-54974.herokuapp.com/getAllMusic";
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        JSONArray array = (JSONArray) jsonObject.get("userMusic");
+
+                        for(int j = 0; j < array.length(); j++) {
+                            JSONObject o = array.getJSONObject(j);
+
+                            mID.add(o.get("id").toString());
+                            mArtist.add(o.get("artist").toString());
+                            mTitle.add(o.get("title").toString());
+                            mGenre.add(o.get("genre").toString());
+                            msongUrl.add(o.get("songUrl").toString());
+                            mcoverArtUrl.add(o.get("coverArtUrl").toString());
+                        }
+                    }
+
+                    initRecyclerView();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-        }
-    };
+        });
+    }
+
+    private void initRecyclerView() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                RecyclerView recyclerView = getActivity().findViewById(R.id.home_recycler_view);
+                HomeRecylerViewAdapater adapter = new HomeRecylerViewAdapater(mID, mArtist, mTitle, mGenre, mcoverArtUrl, msongUrl, getContext());
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(adapter);
+            }
+        });
+    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +16,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/dropMenuBtn"
@@ -26,33 +27,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                layout="@layout/snippet_top_profile"
+            <!--<include-->
+                <!--layout="@layout/snippet_top_profile"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+            <!--<include layout="@layout/snippet_user_track_numbers" />-->
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="110dp"
+                app:srcCompat="@drawable/profile_logo" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="218dp"
+                android:src="@drawable/culteee_id0002"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+            <TextView
+                android:id="@+id/profile_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:text="username"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/profileRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <include layout="@layout/snippet_user_track_numbers" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="38dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <!--TODO replace with recycle view-->
-
-                <include layout="@layout/snippet_profile_each_track" />
-
-                <include layout="@layout/snippet_profile_each_track" />
-
-                <include layout="@layout/snippet_profile_each_track" />
-
-                <include layout="@layout/snippet_profile_each_track" />
-
-            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

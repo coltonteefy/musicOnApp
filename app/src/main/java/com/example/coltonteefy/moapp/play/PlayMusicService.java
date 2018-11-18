@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
@@ -16,14 +17,14 @@ import java.io.IOException;
 
 public class PlayMusicService extends Service {
 
-    MediaPlayer mediaPlayer;
-    SeekBar songPositionBar;
-    Boolean isPlaying = false;
-    private Handler myHandler = new Handler();
-    double startTime;
-    int min, sec;
+    private final String TAG = "PlayMusicService";
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    String songUrl, coverArtUrl, artist, songTitle;
     String tmpTimeLabel, tmpUpdateTime;
-    TextView elapsedTimeLabel, totalTimeLabel;
+    Boolean isPlaying = false;
+    int min, sec;
+    double startTime;
+    private Handler myHandler = new Handler();
 
     public PlayMusicService() {
     }
@@ -37,79 +38,85 @@ public class PlayMusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mediaPlayer = new MediaPlayer();
-
-        try {
-            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1541199248759waitforyoulove.m4a");
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//
-//        mediaPlayer.seekTo(0);
-//        mediaPlayer.setVolume(0.5f, 0.5f);
-
-        mediaPlayer.setLooping(true);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        songUrl = intent.getStringExtra("songUrl");
+        coverArtUrl = intent.getStringExtra("coverArtUrl");
+        artist = intent.getStringExtra("artist");
+        songTitle = intent.getStringExtra("songTitle");
+        Log.i(TAG, "onStartCommand: INSIDE PLAY SERVICE "
+                + "\n" + songUrl
+                + "\n" + coverArtUrl
+                + "\n" + artist
+                + "\n" + songTitle);
 
-//        if (!mediaPlayer.isPlaying()) {
-//            mediaPlayer.start();
-//            isPlaying = true;
-//            myHandler.postDelayed(UpdateSongTime, 100);
-//
-//        } else {
-//            mediaPlayer.pause();
-//            isPlaying = false;
-//        }
 
+        try {
+            mediaPlayer.setDataSource(songUrl);
+
+            mediaPlayer.prepare();
+
+            mediaPlayer.seekTo(0);
+            mediaPlayer.setVolume(0.5f, 0.5f);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaPlayer.setLooping(true);
+
+        mediaPlayer.start();
         return super.onStartCommand(intent, flags, startId);
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//
-//        if (mediaPlayer != null) {
-//            mediaPlayer.release();
-//        }
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
     }
 
-//    public void totalTime(int time) {
-//        min = time / 1000 / 60;
-//        sec = time / 1000 % 60;
-//        tmpTimeLabel = min + ":";
-//
-//        if (sec < 10) {
-//            tmpTimeLabel += "0";
-//        }
-//        tmpTimeLabel += sec;
+
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
+
+    public void totalTime(int time) {
+        min = time / 1000 / 60;
+        sec = time / 1000 % 60;
+        tmpTimeLabel = min + ":";
+
+        if (sec < 10) {
+            tmpTimeLabel += "0";
+        }
+        tmpTimeLabel += sec;
+        Log.i(TAG, "totalTime: " + tmpTimeLabel);
 //        totalTimeLabel.setText(String.valueOf(tmpTimeLabel));
-//    }
-//
-//    public void updateTimeElapsed(int time) {
-//        min = time / 1000 / 60;
-//        sec = time / 1000 % 60;
-//        tmpUpdateTime = min + ":";
-//
-//        if (sec < 10) {
-//            tmpUpdateTime += "0";
-//        }
-//        tmpUpdateTime += sec;
+    }
+
+    public void updateTimeElapsed(int time) {
+        min = time / 1000 / 60;
+        sec = time / 1000 % 60;
+        tmpUpdateTime = min + getString(R.string.colon);
+
+        if (sec < 10) {
+            tmpUpdateTime += getString(R.string.zero);
+        }
+        tmpUpdateTime += sec;
+        Log.i(TAG, "update: " + tmpUpdateTime);
 //        elapsedTimeLabel.setText(tmpUpdateTime);
-//    }
-//
-//    private Runnable UpdateSongTime = new Runnable() {
-//        public void run() {
-//            startTime = mediaPlayer.getCurrentPosition();
-//            updateTimeElapsed(mediaPlayer.getCurrentPosition());
+    }
+
+    private Runnable UpdateSongTime = new Runnable() {
+        public void run() {
+            startTime = mediaPlayer.getCurrentPosition();
+            updateTimeElapsed(mediaPlayer.getCurrentPosition());
 //            songPositionBar.setProgress(mediaPlayer.getCurrentPosition());
-//            myHandler.postDelayed(this, 100);
-//        }
-//    };
+            myHandler.postDelayed(this, 100);
+        }
+    };
 }

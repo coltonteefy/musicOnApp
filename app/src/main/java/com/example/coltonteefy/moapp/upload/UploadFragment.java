@@ -72,6 +72,7 @@ public class UploadFragment extends Fragment {
     String genre;
     ImageView coverArt;
     Boolean dialogOpen = false;
+    String username;
 
     @Nullable
     @Override
@@ -84,6 +85,7 @@ public class UploadFragment extends Fragment {
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        username = getActivity().getIntent().getStringExtra("username");
 
         fileChosenText = view.findViewById(R.id.fileChosenText);
         filePath = view.findViewById(R.id.filePath);
@@ -140,7 +142,6 @@ public class UploadFragment extends Fragment {
             file = new File(filePath.getText().toString());
             chooseFileBtn.setVisibility(View.INVISIBLE);
             uploadBtn.setVisibility(View.VISIBLE);
-            Log.d(TAG, "onReceive: " + filePath.getText() + " File: " + file);
 
             if (dialogOpen) {
                 Bitmap bitmap = BitmapFactory.decodeFile(intent.getStringExtra("filePath"));
@@ -251,7 +252,6 @@ public class UploadFragment extends Fragment {
         }
 
         public void upload() {
-            String username = "see";
             OkHttpClient client = new OkHttpClient();
 
             String url = "https://afternoon-waters-54974.herokuapp.com/uploadMusic/" + username;
@@ -300,7 +300,6 @@ public class UploadFragment extends Fragment {
 
 
         public void finishUpload(String titleInput, String genre, String descriptionInput) {
-            String username = "see";
             OkHttpClient client = new OkHttpClient();
 
             String url = "https://afternoon-waters-54974.herokuapp.com/updateMusicDetailsImmediately/" + username;

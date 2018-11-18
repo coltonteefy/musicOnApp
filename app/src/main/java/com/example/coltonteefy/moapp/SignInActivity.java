@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.example.coltonteefy.moapp.utils.CreateCustomToast;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -72,7 +70,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 RequestBody requestBody = formBuilder.build();
 
-
                 Request request = new Request.Builder()
                         .url(url)
                         .post(requestBody)
@@ -103,6 +100,7 @@ public class SignInActivity extends AppCompatActivity {
                                         switch (message) {
                                             case "success":
                                                 Intent loginSuccess = new Intent(SignInActivity.this, MainActivity.class);
+                                                loginSuccess.putExtra("username", userInput);
                                                 startActivity(loginSuccess);
                                                 break;
                                             case "Invalid password":

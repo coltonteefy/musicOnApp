@@ -1,10 +1,18 @@
 package com.example.coltonteefy.moapp.play;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +23,12 @@ import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.R;
 
+import java.io.File;
 import java.io.IOException;
 
 public class PlayFragment extends Fragment {
 
+    private final String TAG = "PlayFragment";
     Button playBtn, previousBtn, nextBtn;
     SeekBar songPositionBar;
     TextView elapsedTimeLabel, totalTimeLabel;
@@ -28,6 +38,7 @@ public class PlayFragment extends Fragment {
     int min, sec;
     double startTime;
     private Handler myHandler = new Handler();
+    String songUrl, coverArtUrl, artist, songTitle;
 
     @Nullable
     @Override
@@ -39,17 +50,19 @@ public class PlayFragment extends Fragment {
         elapsedTimeLabel = view.findViewById(R.id.elapsedTimeLabel);
         songPositionBar = view.findViewById(R.id.songPositionBar);
 
-        //  media player
-//        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.boris_brejcha_purple_noise_id0001);
-        mediaPlayer = new MediaPlayer();
+//        songUrl = getActivity().getIntent().getStringExtra("songUrl");
+//        coverArtUrl = getActivity().getIntent().getStringExtra("coverArtUrl");
+//        artist = getActivity().getIntent().getStringExtra("artist");
+//        songTitle = getActivity().getIntent().getStringExtra("songTitle");
 
+        mediaPlayer = new MediaPlayer();
+//
         try {
-            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1541573753303hands+up.mp3");
+            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1542396072073handsup.mp3");
             mediaPlayer.prepare();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         mediaPlayer.seekTo(0);
         mediaPlayer.setVolume(0.5f, 0.5f);
@@ -61,6 +74,7 @@ public class PlayFragment extends Fragment {
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                getActivity().startService(new Intent(getActivity(), PlayMusicService.class));
                 mediaPlayer.setLooping(true);
                 if (!mediaPlayer.isPlaying()) {
                     mediaPlayer.start();
@@ -123,6 +137,7 @@ public class PlayFragment extends Fragment {
         Toast.makeText(getActivity(), "DESTROYED", Toast.LENGTH_SHORT).show();
         mediaPlayer.stop();
     }
+
 
     public void totalTime(int time) {
         min = time / 1000 / 60;

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" />
+    <string name="app_name">MusicOn</string>
 
     <string name="search">Search</string>
     <string name="play">Play</string>
@@ -33,6 +33,8 @@
     <string name="file_chosen_to_upload">File chosen to upload</string>
     <string name="zero">0</string>
     <string name="colon">:</string>
+    <string name="genre">genre</string>
+    <string name="song_name">Song Name</string>
 
     <string-array name="genres">
         <item>Alternative</item>
