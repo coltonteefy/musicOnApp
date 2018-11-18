@@ -17,11 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coltonteefy.moapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,14 +33,15 @@ public class PlayFragment extends Fragment {
     private final String TAG = "PlayFragment";
     Button playBtn, previousBtn, nextBtn;
     SeekBar songPositionBar;
-    TextView elapsedTimeLabel, totalTimeLabel;
+    TextView elapsedTimeLabel, totalTimeLabel, artistName, songName;
+    ImageView imageCoverArt;
     MediaPlayer mediaPlayer;
     String tmpTimeLabel, tmpUpdateTime;
     Boolean isPlaying = false;
     int min, sec;
     double startTime;
     private Handler myHandler = new Handler();
-    String songUrl, coverArtUrl, artist, songTitle;
+
 
     @Nullable
     @Override
@@ -50,39 +53,22 @@ public class PlayFragment extends Fragment {
         elapsedTimeLabel = view.findViewById(R.id.elapsedTimeLabel);
         songPositionBar = view.findViewById(R.id.songPositionBar);
 
-//        songUrl = getActivity().getIntent().getStringExtra("songUrl");
-//        coverArtUrl = getActivity().getIntent().getStringExtra("coverArtUrl");
-//        artist = getActivity().getIntent().getStringExtra("artist");
-//        songTitle = getActivity().getIntent().getStringExtra("songTitle");
+        artistName = view.findViewById(R.id.artistName);
+        songName = view.findViewById(R.id.songName);
+        imageCoverArt = view.findViewById(R.id.imageCoverArt);
 
-        mediaPlayer = new MediaPlayer();
-//
-        try {
-            mediaPlayer.setDataSource("https://music-on-app.s3.us-west-1.amazonaws.com/uploads/musicUploads/1542396072073handsup.mp3");
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter("updateTime"));
 
-        mediaPlayer.seekTo(0);
-        mediaPlayer.setVolume(0.5f, 0.5f);
-
-        totalTime(mediaPlayer.getDuration());
-        songPositionBar.setMax(mediaPlayer.getDuration());
+//        myHandler.postDelayed(UpdateSongTime, 100);
 
         //  play/pause controller
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getActivity().startService(new Intent(getActivity(), PlayMusicService.class));
-                mediaPlayer.setLooping(true);
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
+                if (!isPlaying) {
                     playBtn.setBackgroundResource(R.drawable.ic_pause_button);
                     isPlaying = true;
-                    myHandler.postDelayed(UpdateSongTime, 100);
                 } else {
-                    mediaPlayer.pause();
                     playBtn.setBackgroundResource(R.drawable.ic_play_button);
                     isPlaying = false;
                 }
@@ -171,4 +157,30 @@ public class PlayFragment extends Fragment {
             myHandler.postDelayed(this, 100);
         }
     };
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+//            elapsedTimeLabel.setText(intent.getStringExtra("elapsedTime"));
+
+            Log.i(TAG, "onReceive: TOTAL TIME " + intent.getStringExtra("artist"));
+
+            int time = Integer.parseInt(intent.getStringExtra("totalTime"));
+            totalTime(time);
+
+            artistName.setText(intent.getStringExtra("artist"));
+            songName.setText(intent.getStringExtra("songTitle"));
+
+            Picasso.get()
+                    .load(intent.getStringExtra("coverArtUrl"))
+                    .resize(100, 100)
+                    .centerCrop()
+                    .into(imageCoverArt);
+
+            playBtn.setBackgroundResource(R.drawable.ic_pause_button);
+            isPlaying = true;
+        }
+    };
+
+
 }

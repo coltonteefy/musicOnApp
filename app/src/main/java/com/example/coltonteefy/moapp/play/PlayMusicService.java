@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,7 @@ public class PlayMusicService extends Service {
     String songUrl, coverArtUrl, artist, songTitle;
     String tmpTimeLabel, tmpUpdateTime;
     Boolean isPlaying = false;
-    int min, sec;
+    int min, sec, duration;
     double startTime;
     private Handler myHandler = new Handler();
 
@@ -52,16 +54,11 @@ public class PlayMusicService extends Service {
                 + "\n" + artist
                 + "\n" + songTitle);
 
-
         try {
             mediaPlayer.setDataSource(songUrl);
-
             mediaPlayer.prepare();
-
             mediaPlayer.seekTo(0);
             mediaPlayer.setVolume(0.5f, 0.5f);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,6 +66,18 @@ public class PlayMusicService extends Service {
         mediaPlayer.setLooping(true);
 
         mediaPlayer.start();
+//        myHandler.postDelayed(UpdateSongTime, 100);
+
+        setDuration(mediaPlayer);
+
+        Intent updateIntent = new Intent();
+        updateIntent.setAction("updateTime");
+        updateIntent.putExtra("totalTime", getDurationTotal());
+        updateIntent.putExtra("coverArtUrl", coverArtUrl);
+        updateIntent.putExtra("artist", artist);
+        updateIntent.putExtra("songTitle", songTitle);
+        LocalBroadcastManager.getInstance(PlayMusicService.this).sendBroadcast(updateIntent);
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -94,7 +103,7 @@ public class PlayMusicService extends Service {
             tmpTimeLabel += "0";
         }
         tmpTimeLabel += sec;
-        Log.i(TAG, "totalTime: " + tmpTimeLabel);
+//        Log.i(TAG, "TOTAL TIME: " + tmpTimeLabel);
 //        totalTimeLabel.setText(String.valueOf(tmpTimeLabel));
     }
 
@@ -107,16 +116,36 @@ public class PlayMusicService extends Service {
             tmpUpdateTime += getString(R.string.zero);
         }
         tmpUpdateTime += sec;
-        Log.i(TAG, "update: " + tmpUpdateTime);
+//        Log.i(TAG, "UPDATE TIME ELAPSED: " + tmpUpdateTime);
 //        elapsedTimeLabel.setText(tmpUpdateTime);
+    }
+
+    public void setDuration(MediaPlayer mediaPlayer) {
+        this.duration = mediaPlayer.getDuration();
+    }
+
+    public String getDurationTotal() {
+        return String.valueOf(duration);
+    }
+
+    public int getCurrentPosition(MediaPlayer mediaPlayer) {
+        return mediaPlayer.getCurrentPosition();
     }
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            startTime = mediaPlayer.getCurrentPosition();
-            updateTimeElapsed(mediaPlayer.getCurrentPosition());
+            Log.i(TAG, "UPDATE SONG TIME: ");
+
+//            startTime = mediaPlayer.getCurrentPosition();
+//            updateTimeElapsed(mediaPlayer.getCurrentPosition());
 //            songPositionBar.setProgress(mediaPlayer.getCurrentPosition());
             myHandler.postDelayed(this, 100);
+
+
+            Intent intent = new Intent();
+            intent.setAction("updateTime");
+            intent.putExtra("elapsedTime", tmpUpdateTime);
+            LocalBroadcastManager.getInstance(PlayMusicService.this).sendBroadcast(intent);
         }
     };
 }
