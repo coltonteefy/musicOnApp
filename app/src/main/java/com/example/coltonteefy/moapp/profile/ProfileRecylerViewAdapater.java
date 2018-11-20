@@ -60,7 +60,7 @@ public class ProfileRecylerViewAdapater extends RecyclerView.Adapter<ProfileRecy
 
         Picasso.get()
                 .load(mCoverArtUrl.get(i))
-                .resize(100, 100)
+                .resize(500, 500)
                 .centerCrop()
                 .into(viewHolder.imageView);
 

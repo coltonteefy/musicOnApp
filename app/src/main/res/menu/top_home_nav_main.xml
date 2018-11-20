@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_music"
+        android:enabled="true"
+        android:icon="@drawable/ic_queue_music"
+        android:title="Playlist"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_local_events"
+        android:enabled="true"
+        android:icon="@drawable/ic_event_note"
+        android:title="Local events"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_add_event"
+        android:enabled="true"
+        android:icon="@drawable/ic_note_add"
+        android:title="Add event"
+        app:showAsAction="ifRoom" />
+</menu>

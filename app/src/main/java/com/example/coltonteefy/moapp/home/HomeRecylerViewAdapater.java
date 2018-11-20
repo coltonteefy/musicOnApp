@@ -28,10 +28,8 @@ public class HomeRecylerViewAdapater extends RecyclerView.Adapter<HomeRecylerVie
     private ArrayList<String> mCoverArtUrl = new ArrayList<>();
     private ArrayList<String> msongUrl = new ArrayList<>();
     private Context mContext;
-    final Fragment fragment3 = new PlayFragment();
 
-
-    public HomeRecylerViewAdapater(ArrayList<String> mID, ArrayList<String> mArtist, ArrayList<String> mTitle, ArrayList<String> mGenre, ArrayList<String> mcoverArtUrl, ArrayList<String> msongUrl, Context mContext) {
+    HomeRecylerViewAdapater(ArrayList<String> mID, ArrayList<String> mArtist, ArrayList<String> mTitle, ArrayList<String> mGenre, ArrayList<String> mcoverArtUrl, ArrayList<String> msongUrl, Context mContext) {
         this.mID = mID;
         this.mArtist = mArtist;
         this.mTitle = mTitle;
@@ -60,7 +58,7 @@ public class HomeRecylerViewAdapater extends RecyclerView.Adapter<HomeRecylerVie
 
         Picasso.get()
                 .load(mCoverArtUrl.get(i))
-                .resize(100, 100)
+                .resize(500, 500)
                 .centerCrop()
                 .into(viewHolder.imageView);
 
@@ -85,9 +83,8 @@ public class HomeRecylerViewAdapater extends RecyclerView.Adapter<HomeRecylerVie
         TextView artist, songTitle, songUrl, ID, coverArtUrl, genre;
         LinearLayout parentLayout;
         ImageView imageView;
-        String username;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ID = itemView.findViewById(R.id.home_ID);
