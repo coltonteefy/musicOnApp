@@ -13,31 +13,56 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/home_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+            android:id="@+id/top_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:background="@color/top_nav"
             app:menu="@menu/top_home_nav_main"
             app:itemTextColor="@color/white"
             app:itemIconTint="@color/white"/>
-
-        <!--<TextView-->
-            <!--android:id="@+id/textView11"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="25dp"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/home"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textSize="30sp" />-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/home_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:padding="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/local_events"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/local_events_layout"
+                layout="@layout/layout_local_events"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/add_events"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/add_events_layout"
+                layout="@layout/layout_add_events"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

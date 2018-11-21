@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.coltonteefy.moapp.home.HomeFragment;
 import com.example.coltonteefy.moapp.play.PlayFragment;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         //  bottom navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
 
         //  create fragment instances in order to maintain states when navigating between each
         fm.beginTransaction().add(R.id.fragment_container, fragment5, "5").hide(fragment5).commit();

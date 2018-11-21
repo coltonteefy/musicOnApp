@@ -11,4 +11,5 @@
     <color name="alert">#F02826</color>
     <color name="success">#07ca00</color>
     <color name="black">#000</color>
+    <color name="top_nav">#1d1d1d</color>
 </resources>
